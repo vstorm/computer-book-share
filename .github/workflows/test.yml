@@ -1,0 +1,31 @@
+name: 更新JSON文件
+
+on: push
+
+permissions:
+  contents: write
+
+jobs:
+  job1:
+    name: 更新JSON文件
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: :package:读取仓库
+        uses: actions/checkout@v4
+
+      - name: :construction:运行脚本
+        run: python md2json.py
+
+      - name: :memo:提交更改
+        run: |
+          git config --global user.email ${{ secrets.EMAIL }}
+          git config --global user.name ${{ secrets.NAME }}          
+          git add .
+          git commit -m ":sparkles: update JSON file"
+      - name: PUSH
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{secrets.TEST_TOKEN}}
+
+
